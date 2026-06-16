@@ -14,9 +14,37 @@ def get_stock_data(ticker):
 
     # return company information
     return {
+
+        # company name
         "company": info.get("longName"),
+
+        # current stock price
         "price": info.get("currentPrice"),
+
+        # market value of the company
         "market_cap": info.get("marketCap"),
+
+        # price-to-earnings ratio
         "pe_ratio": info.get("trailingPE"),
-        "sector": info.get("sector")
+
+        # business sector
+        "sector": info.get("sector"),
+
+        # highest stock price in last 52 weeks
+        "fifty_two_week_high": info.get("fiftyTwoWeekHigh"),
+
+        # lowest stock price in last 52 weeks
+        "fifty_two_week_low": info.get("fiftyTwoWeekLow"),
+
+        # profit margin
+        "profit_margin": info.get("profitMargins"),
+
+        # dividend yield
+        "dividend_yield": info.get("dividendYield"),
+
+        # stock volatility compared to market
+        "beta": info.get("beta"),
+
+        # analyst recommendation
+        "recommendation": info.get("recommendationKey")
     }
