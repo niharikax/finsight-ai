@@ -1,16 +1,8 @@
 # FinSight AI
 
-FinSight AI is a financial research application that helps users analyse annual reports and compare public companies.
+FinSight AI is a multi-agent financial research platform that combines retrieval augmented generation (RAG), vector search, large language models and financial market data.
 
-The project combines retrieval augmented generation (RAG), vector search and large language models to answer questions directly from uploaded company reports. It also includes a stock comparison tool that retrieves live market data using Yahoo Finance.
-
-## Why I Built This
-
-I wanted to better understand how modern AI systems retrieve information from documents instead of relying entirely on a model's training data.
-
-Annual reports are often hundreds of pages long and contain valuable information about a company's financial performance, risks and strategy. FinSight AI was built to make exploring those documents faster and more interactive.
-
-The project also gave me practical experience working with embeddings, vector databases, semantic search and LLM integrations.
+The platform helps users analyse annual reports, compare public companies, evaluate AI-generated answers and perform broader company research through specialised AI agents.
 
 ---
 
@@ -18,94 +10,142 @@ The project also gave me practical experience working with embeddings, vector da
 
 ### Annual Report Analysis
 
-* Upload annual report PDFs
-* Extract and process report text
-* Ask questions about the report
-* Retrieve relevant sections using semantic search
-* Generate answers grounded in the document
+- Upload annual report PDFs
+- Extract and process report text
+- Ask questions about report contents
+- Retrieve relevant sections using semantic search
+- Generate source-grounded answers using RAG
+- Quick analysis buttons:
+  - Summarise Report
+  - Find Key Risks
+  - Revenue Drivers
+  - Future Outlook
+- Download generated answers
 
-### Stock Comparison
+### Stock Analysis
 
-* Compare public companies using ticker symbols
-* Retrieve live market data from Yahoo Finance
-* View stock price
-* View market capitalisation
-* View P/E ratio
-* View sector information
+- Compare companies using ticker symbols
+- Retrieve live market data through Yahoo Finance
+- View:
+  - Stock Price
+  - Market Capitalisation
+  - P/E Ratio
+  - Sector
+  - 52 Week High
+  - 52 Week Low
+  - Profit Margin
+  - Dividend Yield
+  - Beta
+  - Analyst Recommendation
 
----
+### Evaluation Agent
 
-## How It Works
+- Evaluates generated answers
+- Scores:
+  - Faithfulness
+  - Relevance
+  - Completeness
+  - Clarity
+- Provides feedback on answer quality
 
-### 1. Document Processing
+### Research Agent
 
-The user uploads a PDF annual report.
-
-The application extracts the text using PyPDF and prepares it for further processing.
-
-### 2. Chunking
-
-The report text is split into smaller chunks.
-
-Breaking the document into smaller sections makes retrieval more efficient and improves search quality.
-
-### 3. Embeddings
-
-Each chunk is converted into a vector embedding using the Sentence Transformers model `all-MiniLM-L6-v2`.
-
-These embeddings capture the meaning of the text and allow semantic search.
-
-### 4. Vector Search
-
-The embeddings are stored in ChromaDB.
-
-When a user asks a question, the question is converted into an embedding and compared against the stored document embeddings.
-
-The most relevant chunks are retrieved and used as context.
-
-### 5. Answer Generation
-
-The retrieved chunks are sent to a Llama model hosted on Groq.
-
-The model generates an answer using the retrieved context rather than relying on its own knowledge.
-
-### 6. Stock Analysis
-
-The stock comparison module uses Yahoo Finance data through the `yfinance` library.
-
-Users can compare companies using key financial metrics.
+- Generates company research summaries
+- Analyses:
+  - Business Model
+  - Growth Drivers
+  - Risks
+  - Competitive Position
+  - Future Outlook
+- Download research summaries
 
 ---
 
 ## Architecture
 
-```text
+### RAG Agent
+
 PDF Upload
-    │
-    ▼
+
+↓
+
 Text Extraction
-    │
-    ▼
+
+↓
+
 Chunking
-    │
-    ▼
+
+↓
+
 Embeddings
-    │
-    ▼
+
+↓
+
 ChromaDB
-    │
-    ▼
+
+↓
+
 Similarity Search
-    │
-    ▼
+
+↓
+
 Relevant Chunks
-    │
-    ▼
+
+↓
+
 Groq LLM
-    │
-    ▼
+
+↓
+
 Answer
-```
+
+### Evaluation Agent
+
+Question
+
++
+
+Answer
+
++
+
+Retrieved Context
+
+↓
+
+Evaluation Agent
+
+↓
+
+Quality Scores
+
+### Stock Agent
+
+Ticker Symbol
+
+↓
+
+Yahoo Finance
+
+↓
+
+Financial Metrics
+
+↓
+
+Company Comparison
+
+### Research Agent
+
+Research Question
+
+↓
+
+Groq LLM
+
+↓
+
+Structured Company Analysis
 
 ---
 
@@ -113,33 +153,33 @@ Answer
 
 ### Frontend
 
-* Streamlit
+- Streamlit
 
 ### Document Processing
 
-* PyPDF
+- PyPDF
 
 ### Embeddings
 
-* Sentence Transformers
-* all-MiniLM-L6-v2
+- Sentence Transformers
+- all-MiniLM-L6-v2
 
 ### Vector Database
 
-* ChromaDB
+- ChromaDB
 
 ### LLM
 
-* Groq
-* Llama 3.1
+- Groq
+- Llama 3.1
 
 ### Financial Data
 
-* yfinance
+- yfinance
 
 ### Language
 
-* Python
+- Python
 
 ---
 
@@ -152,7 +192,9 @@ finsight-ai/
 │
 ├── agents/
 │   ├── rag_agent.py
-│   └── stock_agent.py
+│   ├── stock_agent.py
+│   ├── evaluator_agent.py
+│   └── research_agent.py
 │
 ├── utils/
 │   ├── pdf_loader.py
@@ -160,7 +202,6 @@ finsight-ai/
 │   └── vector_store.py
 │
 ├── screenshots/
-├── tests/
 │
 ├── requirements.txt
 ├── README.md
@@ -169,58 +210,52 @@ finsight-ai/
 
 ---
 
-## Installation
+## How It Works
 
-Clone the repository:
+### RAG Pipeline
 
-```bash
-git clone https://github.com/niharikax/finsight-ai.git
-cd finsight-ai
-```
+When a PDF is uploaded, the application extracts the text, splits it into smaller chunks and converts those chunks into embeddings.
 
-Install dependencies:
+The embeddings are stored in ChromaDB. When a user asks a question, the application retrieves the most relevant chunks and sends them to a Groq-hosted Llama model to generate a grounded answer.
 
-```bash
-pip install -r requirements.txt
-```
+### Evaluation Pipeline
 
-Create a `.env` file:
+Generated answers are passed to an Evaluation Agent which scores them for faithfulness, relevance, completeness and clarity.
 
-```env
-GROQ_API_KEY=your_api_key_here
-```
+### Stock Analysis Pipeline
 
-Run the application:
+The Stock Agent retrieves live market data from Yahoo Finance and displays financial metrics for company comparison.
 
-```bash
-streamlit run app.py
-```
+### Research Pipeline
+
+The Research Agent answers broader company research questions and produces structured financial research summaries.
 
 ---
 
-## Future Work
+## Future Improvements
 
-* Research agent for company research
-* Evaluation agent for answer assessment
-* Support for multiple reports
-* Financial summary generation
-* Streamlit Cloud deployment
-* Automated testing
+- Multi-document analysis
+- Financial health scoring
+- Analyst report generation
+- Interactive stock charts
+- Live web search integration
+- Streamlit Cloud deployment
 
 ---
 
 ## What I Learned
 
-This project helped me gain experience with:
+This project helped me gain practical experience with:
 
-* Retrieval augmented generation
-* Embedding models
-* Vector databases
-* Semantic search
-* Prompt engineering
-* LLM APIs
-* Financial data APIs
-* Streamlit development
+- Retrieval augmented generation
+- Embedding models
+- Vector databases
+- Semantic search
+- Prompt engineering
+- LLM evaluation
+- Financial data APIs
+- Streamlit development
+- Multi-agent system design
 
 ---
 
@@ -228,4 +263,4 @@ This project helped me gain experience with:
 
 Niharika
 
-Built as a personal project to learn more about financial AI systems, retrieval pipelines and LLM applications.
+Built as a personal project to explore financial AI systems, retrieval pipelines and multi-agent architectures.
