@@ -131,6 +131,38 @@ with rag_tab:
             "Ask a question about the annual report"
         )
 
+        # create preset question buttons
+        # these make the app easier to demo
+        st.write("Quick Analysis")
+
+        col_a, col_b, col_c, col_d = st.columns(4)
+
+        with col_a:
+            summary_clicked = st.button("Summarise Report")
+
+        with col_b:
+            risks_clicked = st.button("Find Key Risks")
+
+        with col_c:
+            revenue_clicked = st.button("Revenue Drivers")
+
+        with col_d:
+            outlook_clicked = st.button("Future Outlook")
+
+
+        # set the question based on which button is clicked
+        if summary_clicked:
+            question = "summarise this report in 5 bullet points"
+
+        if risks_clicked:
+            question = "what are the key risks mentioned in this report?"
+
+        if revenue_clicked:
+            question = "what are the main revenue drivers mentioned in this report?"
+
+        if outlook_clicked:
+            question = "what does the report say about future outlook?"
+
         # check whether user entered a question
         if question:
 
@@ -157,6 +189,14 @@ with rag_tab:
 
             # show answer
             st.write(answer)
+            
+            # allow user to download the generated answer
+            st.download_button(
+                label="Download Answer",
+                data=answer,
+                file_name="finsight_ai_answer.txt",
+                mime="text/plain"
+            )
 
             # show source chunks after answer
             st.subheader("Source Chunks Used")
