@@ -17,6 +17,8 @@ from utils.vector_store import create_vector_store, search_vector_store
 
 from agents.rag_agent import answer_question
 
+# import stock data function
+from agents.stock_agent import get_stock_data
 
 # Configure the Streamlit page settings
 st.set_page_config(
@@ -86,18 +88,31 @@ if uploaded_file:
     question = st.text_input(
         "Ask a question about the annual report"
     )
-
     # Check if the user entered a question
     if question:
 
-        # Convert the question into an embedding
-        # Search the vector database for the most similar chunks
+        # Search the vector database for the most relevant chunks
+        # The question is converted into an embedding and compared
+        # against all document chunk embeddings
         relevant_chunks = search_vector_store(
             collection,
             question
         )
 
-        # Display section heading
+        # Send the question and retrieved chunks to the llm
+        # The llm will use the chunks as context to generate an answer
+        answer = answer_question(
+            question,
+            relevant_chunks
+        )
+
+        # Display a heading for the generated answer
+        st.subheader("AI Answer")
+
+        # Display the llm response
+        st.write(answer)
+
+        # Display a heading for the retrieved source chunks
         st.subheader("Most Relevant Source Chunks")
 
         # Loop through each retrieved chunk
@@ -106,10 +121,75 @@ if uploaded_file:
             # Display the chunk text
             st.write(chunk)
 
-            # Add a horizontal divider for readability
+            # Add a divider between chunks for readability
             st.divider()
 
-        answer = answer_question(question, relevant_chunks)
+       # create a horizontal divider
+    # visually separates the rag section from stock analysis
+    st.divider()
 
-        st.subheader("AI Answer")
-        st.write(answer)
+    # section heading
+    st.header("Stock Comparison")
+
+    # input for first company ticker
+    # default value is apple
+    ticker1 = st.text_input(
+        "First Company Ticker",
+        value="AAPL"
+    )
+
+    # input for second company ticker
+    # default value is microsoft
+    ticker2 = st.text_input(
+        "Second Company Ticker",
+        value="MSFT"
+    )
+
+    # button that starts the stock comparison
+    if st.button("Compare Companies"):
+
+        # get stock data for the first ticker
+        company1 = get_stock_data(ticker1)
+
+        # get stock data for the second ticker
+        company2 = get_stock_data(ticker2)
+
+        # create two columns
+        # this lets us display both companies side by side
+        col1, col2 = st.columns(2)
+
+        # display first company
+        with col1:
+
+            # company name heading
+            st.subheader(company1["company"])
+
+            # display current stock price as a metric card
+            st.metric("Stock Price", company1["price"])
+
+            # display company market cap
+            st.write("Market Cap:", company1["market_cap"])
+
+            # display price-to-earnings ratio
+            st.write("P/E Ratio:", company1["pe_ratio"])
+
+            # display company sector
+            st.write("Sector:", company1["sector"])
+
+        # display second company
+        with col2:
+
+            # company name heading
+            st.subheader(company2["company"])
+
+            # display current stock price as a metric card
+            st.metric("Stock Price", company2["price"])
+
+            # display company market cap
+            st.write("Market Cap:", company2["market_cap"])
+
+            # display price-to-earnings ratio
+            st.write("P/E Ratio:", company2["pe_ratio"])
+
+            # display company sector
+            st.write("Sector:", company2["sector"])
