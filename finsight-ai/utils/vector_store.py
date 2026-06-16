@@ -41,3 +41,18 @@ def create_vector_store(chunks):
 
     # Return the completed collection
     return collection
+
+# search the vector database for chunks most similar to the question
+def search_vector_store(collection, question, n_results=3):
+
+    # convert the user's question into an embedding
+    question_embedding = model.encode(question).tolist()
+
+    # search chromadb for similar embeddings
+    results = collection.query(
+        query_embeddings=[question_embedding],
+        n_results=n_results
+    )
+
+    # return the retrieved document chunks
+    return results["documents"][0]

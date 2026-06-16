@@ -15,6 +15,8 @@ from utils.text_chunker import chunk_text
 # search_vector_store -> finds relevant chunks for a question
 from utils.vector_store import create_vector_store, search_vector_store
 
+from agents.rag_agent import answer_question
+
 
 # Configure the Streamlit page settings
 st.set_page_config(
@@ -106,3 +108,8 @@ if uploaded_file:
 
             # Add a horizontal divider for readability
             st.divider()
+
+        answer = answer_question(question, relevant_chunks)
+
+        st.subheader("AI Answer")
+        st.write(answer)
