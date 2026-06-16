@@ -235,6 +235,20 @@ The Stock Agent retrieves live market data from Yahoo Finance and displays finan
 The Research Agent answers broader company research questions and produces structured financial research summaries.
 
 ---
+## Screenshots
+
+### Annual Report Q&A
+![Annual Report Q&A](screenshots/rag-demo.png)
+
+### Stock Comparison
+![Stock Comparison](screenshots/stock-comparison.png)
+
+### Research Agent
+![Research Agent](screenshots/research-agent.png)
+
+### Evaluation Agent
+![Evaluation Agent](screenshots/evaluation-agent.png)
+---
 
 ## Future Improvements
 
@@ -243,7 +257,6 @@ The Research Agent answers broader company research questions and produces struc
 - Analyst report generation
 - Interactive stock charts
 - Live web search integration
-- Streamlit Cloud deployment
 
 ---
 
@@ -265,6 +278,6 @@ This project helped me gain practical experience with:
 
 ## Author
 
-Niharika
+Niharika Aneesh
 
-Built as a personal project to explore financial AI systems, retrieval pipelines and multi-agent architectures.
+I built as a personal project to explore financial AI systems, retrieval pipelines and multi-agent architectures.
