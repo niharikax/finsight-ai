@@ -1,0 +1,10 @@
+streamlit
+pypdf
+chromadb
+sentence-transformers
+yfinance
+pandas
+python-dotenv
+groq
+duckduckgo-search
+pytest
