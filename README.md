@@ -5,6 +5,10 @@ FinSight AI is a multi-agent financial research platform that combines retrieval
 The platform helps users analyse annual reports, compare public companies, evaluate AI-generated answers and perform broader company research through specialised AI agents.
 
 ---
+## Live Demo
+
+[Open FinSight AI](https://financialinsightai.streamlit.app)
+
 
 ## Features
 
