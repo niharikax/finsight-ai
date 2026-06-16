@@ -23,6 +23,9 @@ from agents.rag_agent import answer_question
 # this gets financial data from yahoo finance
 from agents.stock_agent import get_stock_data
 
+from agents.evaluator_agent import evaluate_answer
+
+from agents.research_agent import research_company
 
 # configure the streamlit page
 st.set_page_config(
@@ -57,9 +60,8 @@ st.write(
 )
 
 
-# create tabs for cleaner layout
-rag_tab, stock_tab = st.tabs(
-    ["📄 Annual Report Q&A", "📈 Stock Comparison"]
+rag_tab, stock_tab, research_tab = st.tabs(
+    ["📄 Annual Report Q&A", "📈 Stock Comparison", "🔎 Research Agent"]
 )
 
 
@@ -189,7 +191,20 @@ with rag_tab:
 
             # show answer
             st.write(answer)
-            
+
+            # evaluate the ai answer
+            with st.spinner("evaluating answer quality..."):
+
+                evaluation = evaluate_answer(
+                    question,
+                    answer,
+                    relevant_chunks
+                )
+
+            # display evaluation
+            st.subheader("Answer Evaluation")
+            st.write(evaluation)
+                        
             # allow user to download the generated answer
             st.download_button(
                 label="Download Answer",
@@ -363,4 +378,45 @@ with stock_tab:
             st.write(
                 "Recommendation:",
                company2["recommendation"]
+            )
+
+    # research agent tab
+    with research_tab:
+
+        # section heading
+        st.header("Research Agent")
+
+        # explain what this section does
+        st.write(
+            "Ask broader company research questions about strategy, risks, growth drivers and competitive position."
+        )
+
+        # input for company research question
+        research_question = st.text_input(
+            "Research Question",
+            value="What is Apple's AI strategy?"
+        )
+
+        # button to run research agent
+        if st.button("Run Research Agent"):
+
+            # show spinner while generating research answer
+            with st.spinner("generating research summary..."):
+
+                # generate research response
+                research_answer = research_company(
+                    research_question
+                )
+
+            # display research output
+            st.subheader("Research Summary")
+
+            st.write(research_answer)
+
+            # download research output
+            st.download_button(
+                label="Download Research Summary",
+                data=research_answer,
+                file_name="finsight_research_summary.txt",
+                mime="text/plain"
             )
