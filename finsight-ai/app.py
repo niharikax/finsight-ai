@@ -275,6 +275,41 @@ with stock_tab:
 
             # display sector
             st.write("Sector:", company1["sector"])
+            # display highest stock price in last 52 weeks
+            st.write(
+                "52 Week High:",
+                company1["fifty_two_week_high"]
+            )
+
+            # display lowest stock price in last 52 weeks
+            st.write(
+                "52 Week Low:",
+                company1["fifty_two_week_low"]
+            )
+
+            # display company profit margin
+            st.write(
+                "Profit Margin:",
+                company1["profit_margin"]
+            )
+
+            # display dividend yield
+            st.write(
+                "Dividend Yield:",
+                company1["dividend_yield"]
+            )
+
+            # display beta value
+            st.write(
+                "Beta:",
+                company1["beta"]
+            )
+
+            # display analyst recommendation
+            st.write(
+                "Recommendation:",
+                company1["recommendation"]
+            )
 
         # display second company
         with col2:
@@ -293,3 +328,39 @@ with stock_tab:
 
             # display sector
             st.write("Sector:", company2["sector"])
+
+            # display highest stock price in last 52 weeks
+            st.write(
+                "52 Week High:",
+                company2["fifty_two_week_high"]
+            )
+
+            # display lowest stock price in last 52 weeks
+            st.write(
+                "52 Week Low:",
+                company2["fifty_two_week_low"]
+            )
+
+            # display company profit margin
+            st.write(
+                "Profit Margin:",
+                company2["profit_margin"]
+            )
+
+            # display dividend yield
+            st.write(
+                "Dividend Yield:",
+                company2["dividend_yield"]
+            )
+
+            # display beta value
+            st.write(
+                "Beta:",
+                company2["beta"]
+            )
+
+            # display analyst recommendation
+            st.write(
+                "Recommendation:",
+               company2["recommendation"]
+            )
